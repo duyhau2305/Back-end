@@ -1,21 +1,21 @@
-// routes/users.js
 const express = require('express');
 const router = express.Router();
-const { getUsers, createUser, updateUser, deleteUser, toggleLockUser } = require('../controller/userController');
+const authController = require('../controller/authController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-// Lấy danh sách người dùng
-router.get('/', getUsers);
+// @route   POST api/auth/register
+// @desc    Register a user
+// @access  Public
+router.post('/register', authController.register);
 
-// Thêm người dùng mới
-router.post('/', createUser);
+// @route   POST api/auth/login
+// @desc    Login a user
+// @access  Public
+router.post('/login', authController.login);
 
-// Cập nhật người dùng
-router.put('/:id', updateUser);
-
-// Xóa người dùng
-router.delete('/:id', deleteUser);
-
-// Thay đổi trạng thái khóa người dùng
-router.patch('/lock/:id', toggleLockUser);
+// @route   GET api/auth/user
+// @desc    Get current user
+// @access  Private
+router.get('/user', authMiddleware, authController.getCurrentUser);
 
 module.exports = router;
