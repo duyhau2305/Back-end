@@ -7,17 +7,29 @@ const {
   createUser,
   updateUser,
   deleteUser,
+  findUser,
 } = require('../controller/authController');
 const { authMiddleware, adminMiddleware } = require('../middlewares/authMiddleware');
 
-// Route cho xác thực và quản lý người dùng
+// Route đăng ký người dùng mới
 router.post('/register', register);
+
+// Route đăng nhập người dùng
 router.post('/login', login);
+
+// Route lấy thông tin người dùng hiện tại
 router.get('/user', authMiddleware, getCurrentUser);
 
-// Các route yêu cầu quyền admin
-router.post('/users', authMiddleware, adminMiddleware, createUser);       // Tạo người dùng mới
-router.put('/users/:id', authMiddleware, adminMiddleware, updateUser);    // Cập nhật thông tin người dùng
-router.delete('/users/:id', authMiddleware, adminMiddleware, deleteUser); // Xóa người dùng
+// Route tạo người dùng mới (yêu cầu quyền admin)
+router.post('/users', authMiddleware, adminMiddleware, createUser);
+
+// Route cập nhật thông tin người dùng (yêu cầu quyền admin)
+router.put('/users/:id', authMiddleware, adminMiddleware, updateUser);
+
+// Route xóa người dùng (yêu cầu quyền admin)
+router.delete('/users/:id', authMiddleware, adminMiddleware, deleteUser);
+
+// Route tìm người dùng theo username (yêu cầu quyền admin)
+router.get('/users/:username', authMiddleware, adminMiddleware, findUser);
 
 module.exports = router;

@@ -5,46 +5,48 @@ const UserSchema = new mongoose.Schema({
   employeeId: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   username: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   name: {
     type: String,
-    required: true,
+    required: true
   },
   email: {
     type: String,
     required: true,
-    unique: true,
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: true
   },
   role: {
     type: String,
-    enum: ['admin', 'user','QA','QC', 'Production'],
-    default: 'user',
+    enum: ['admin', 'user', 'QA', 'QC', 'Production'], // Cập nhật đây
+    required: true
   },
   locked: {
     type: Boolean,
-    default: false,
-  },
+    default: false
+  }
 });
 
+// Hàm middleware trước khi lưu dữ liệu để mã hóa mật khẩu
 UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) {
-    next();
-  }
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  if (!this.isModified('password')) return next(); // Chỉ mã hóa mật khẩu nếu nó được sửa đổi
+  const salt = await bcrypt.genSalt(10); // Tạo salt với số vòng băm là 10
+  this.password = await bcrypt.hash(this.password, salt); // Mã hóa mật khẩu
   next();
 });
 
-const User = mongoose.model('User', UserSchema);
+// Hàm so sánh mật khẩu để xác thực người dùng
+UserSchema.methods.comparePassword = function (password) {
+  return bcrypt.compare(password, this.password); // So sánh mật khẩu nhập vào với mật khẩu đã mã hóa
+};
 
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

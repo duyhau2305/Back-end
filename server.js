@@ -1,19 +1,33 @@
 const express = require('express');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const userRoutes = require('./routes/userRoutes');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
+// Khởi tạo ứng dụng Express
 const app = express();
 
-// Connect to the database
-connectDB();
+// Load các biến môi trường từ file .env
+dotenv.config();
 
-// Init Middleware
+// Kết nối với MongoDB
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+  .then(() => console.log('Kết nối MongoDB thành công'))
+  .catch(err => console.error('Kết nối MongoDB thất bại:', err));
+
+// Middleware
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json()); // Xử lý dữ liệu JSON từ body request
 
-// Define Routes
-app.use('/api/auth', require('./routes/auth'));
+// Route chính
+app.use('/api/auth', userRoutes);
 
+// Khởi động server
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server đang chạy trên cổng ${PORT}`);
+});
