@@ -1,26 +1,26 @@
 const jwt = require('jsonwebtoken');
 
-// Middleware xác thực người dùng
 const authMiddleware = (req, res, next) => {
-  // Lấy token từ header 'x-auth-token'
-  const token = req.headers['x-auth-token'];
-  
-  // Nếu không có token, trả về lỗi 401 (Unauthorized)
-  if (!token) return res.status(401).json({ error: 'Không có token' });
+    const token = req.header('Authorization').replace('Bearer ', '');
 
-  try {
-    // Xác thực và giải mã token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
-    // Gán thông tin người dùng giải mã được vào đối tượng req
-    req.user = decoded;
-    
-    // Tiếp tục với middleware hoặc route handler tiếp theo
-    next();
-  } catch (error) {
-    // Nếu token không hợp lệ, trả về lỗi 401 (Unauthorized)
-    res.status(401).json({ error: 'Token không hợp lệ' });
-  }
+    if (!token) {
+        return res.status(401).json({ message: 'Không có token, từ chối truy cập' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded.user;
+        next();
+    } catch (error) {
+        res.status(401).json({ message: 'Token không hợp lệ' });
+    }
 };
 
-module.exports = authMiddleware;
+const adminMiddleware = (req, res, next) => {
+    if (!req.user.isAdmin) {
+        return res.status(403).json({ message: 'Quyền truy cập bị từ chối' });
+    }
+    next();
+};
+
+module.exports = { authMiddleware, adminMiddleware };
