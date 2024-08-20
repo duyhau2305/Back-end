@@ -1,11 +1,13 @@
 const express = require('express');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
+const materialRoutes = require('./routes/materialRoutes');
 const productionOrderRoutes = require('./routes/productionOrderRoutes');
 const shiftReportRoutes = require('./routes/shiftReportRoutes');
 
 const dotenv = require('dotenv');
 const cors = require('cors');
+
 
 
 dotenv.config();
@@ -18,10 +20,12 @@ const app = express();
 // Middleware để xử lý JSON
 app.use(express.json());
 
+
 app.use(cors()); 
 // Sử dụng routes
 app.use('/api/shift-reports', shiftReportRoutes);
 app.use('/api/production-orders', productionOrderRoutes);
+app.use('/api/materials', materialRoutes);
 app.use('/api', userRoutes);
 
 

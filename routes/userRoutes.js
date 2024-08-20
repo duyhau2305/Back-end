@@ -9,6 +9,7 @@ router.post('/admin/create', userController.createAdminUser);
 // Route đăng nhập
 router.post('/login', userController.loginUser);
 
+
 // Routes quản lý người dùng (yêu cầu quyền admin)
 router.get('/users', authMiddleware, adminMiddleware, userController.getUsers);
 router.post('/users', authMiddleware, adminMiddleware, userController.createUser);
