@@ -4,6 +4,7 @@ const userRoutes = require('./routes/userRoutes');
 const materialRoutes = require('./routes/materialRoutes');
 const productionOrderRoutes = require('./routes/productionOrderRoutes');
 const shiftReportRoutes = require('./routes/shiftReportRoutes');
+const substituteMaterialRoutes = require('./routes/substituteMaterialRoutes');
 
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -26,6 +27,7 @@ app.use(cors());
 app.use('/api/shift-reports', shiftReportRoutes);
 app.use('/api/production-orders', productionOrderRoutes);
 app.use('/api/materials', materialRoutes);
+app.use('/api/substitute-materials', substituteMaterialRoutes);
 app.use('/api', userRoutes);
 
 
