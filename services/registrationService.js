@@ -9,7 +9,7 @@ const createRegistration = async (data) => {
 
 // Lấy tất cả các đăng ký
 const getAllRegistrations = async () => {
-  return await Registration.find({});
+  return await Registration.find();
 };
 
 // Lấy một đăng ký theo ID
