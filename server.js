@@ -6,6 +6,10 @@ const productionOrderRoutes = require('./routes/productionOrderRoutes');
 const shiftReportRoutes = require('./routes/shiftReportRoutes');
 const substituteMaterialRoutes = require('./routes/substituteMaterialRoutes');
 const registrationRoutes = require('./routes/registrationRoutes');
+const inspectionSheetRoutes = require('./routes/inspectionSheetRoutes');
+const fileRoutes = require('./routes/fileRoutes');
+const phuLieuRoutes = require('./routes/phulieuRoutes');
+const layMauPhuLieuRoutes = require('./routes/layMauPhuLieuRoutes');
 
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -30,6 +34,10 @@ app.use('/api/materials', materialRoutes);
 app.use('/api/substitute-materials', substituteMaterialRoutes);
 app.use('/api', userRoutes);
 app.use('/api/registrations', registrationRoutes);
+app.use('/api/inspection-sheets', inspectionSheetRoutes);
+app.use('/api/files', fileRoutes);
+app.use('/api/phulieu', phuLieuRoutes);
+app.use('/api/laymauphulieu', layMauPhuLieuRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
