@@ -21,10 +21,20 @@ const deleteLayMauPhuLieu = async (id) => {
   return await LayMauPhuLieu.findByIdAndDelete(id);
 };
 
-module.exports = {
-  createLayMauPhuLieu,
-  getAllLayMauPhuLieu,
-  getLayMauPhuLieuById,
-  updateLayMauPhuLieu,
-  deleteLayMauPhuLieu,
-};
+const getLayMauPhuLieuByKNumber = async (kNumber) => {
+    try {
+      return await LayMauPhuLieu.findOne({ kNumber });
+    } catch (error) {
+      throw new Error('Error fetching LayMauPhuLieu by kNumber: ' + error.message);
+    }
+  };
+  
+  module.exports = {
+    createLayMauPhuLieu,
+    getAllLayMauPhuLieu,
+    getLayMauPhuLieuById,
+    updateLayMauPhuLieu,
+    deleteLayMauPhuLieu,
+    getLayMauPhuLieuByKNumber,
+  };
+  

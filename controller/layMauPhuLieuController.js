@@ -1,69 +1,81 @@
-const phuLieuService = require('../services/phulieuService');
+const layMauPhuLieuService = require('../services/layMauPhuLieuService');
 
-const createPhuLieu = async (req, res) => {
+const createLayMauPhuLieu = async (req, res) => {
   try {
-    const newPhuLieu = await phuLieuService.createPhuLieu(req.body);
-    res.status(201).json(newPhuLieu);
+    const layMauPhuLieu = await layMauPhuLieuService.createLayMauPhuLieu(req.body);
+    res.status(201).json(layMauPhuLieu);
   } catch (error) {
-    res.status(500).json({ message: 'Error creating PhuLieu', error });
+    res.status(500).json({ message: 'Error creating LayMauPhuLieu', error });
   }
 };
 
-const getAllPhuLieus = async (req, res) => {
+const getAllLayMauPhuLieu = async (req, res) => {
   try {
-    const phuLieus = await phuLieuService.getAllPhuLieus();
-    res.status(200).json(phuLieus);
+    const layMauPhuLieu = await layMauPhuLieuService.getAllLayMauPhuLieu();
+    res.status(200).json(layMauPhuLieu);
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching PhuLieus', error });
+    res.status(500).json({ message: 'Error fetching LayMauPhuLieu', error });
   }
 };
 
-const getPhuLieuById = async (req, res) => {
+const getLayMauPhuLieuById = async (req, res) => {
   try {
-    const phuLieu = await phuLieuService.getPhuLieuById(req.params.id);
-    if (!phuLieu) return res.status(404).json({ message: 'PhuLieu not found' });
-    res.status(200).json(phuLieu);
+    const layMauPhuLieu = await layMauPhuLieuService.getLayMauPhuLieuById(req.params.id);
+    if (layMauPhuLieu) {
+      res.status(200).json(layMauPhuLieu);
+    } else {
+      res.status(404).json({ message: 'LayMauPhuLieu not found' });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching PhuLieu by ID', error });
+    res.status(500).json({ message: 'Error fetching LayMauPhuLieu', error });
   }
 };
 
-const getPhuLieuByKNumber = async (req, res) => {
+const updateLayMauPhuLieu = async (req, res) => {
   try {
-    const kNumber = req.params.kNumber;
-    const phuLieu = await phuLieuService.getPhuLieuByKNumber(kNumber);
-    if (!phuLieu) return res.status(404).json({ message: 'PhuLieu not found' });
-    res.status(200).json(phuLieu);
+    const layMauPhuLieu = await layMauPhuLieuService.updateLayMauPhuLieu(req.params.id, req.body);
+    if (layMauPhuLieu) {
+      res.status(200).json(layMauPhuLieu);
+    } else {
+      res.status(404).json({ message: 'LayMauPhuLieu not found' });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching PhuLieu by KNumber', error });
+    res.status(500).json({ message: 'Error updating LayMauPhuLieu', error });
   }
 };
 
-const updatePhuLieu = async (req, res) => {
+const deleteLayMauPhuLieu = async (req, res) => {
   try {
-    const updatedPhuLieu = await phuLieuService.updatePhuLieu(req.params.id, req.body);
-    if (!updatedPhuLieu) return res.status(404).json({ message: 'PhuLieu not found' });
-    res.status(200).json(updatedPhuLieu);
+    const layMauPhuLieu = await layMauPhuLieuService.deleteLayMauPhuLieu(req.params.id);
+    if (layMauPhuLieu) {
+      res.status(200).json({ message: 'LayMauPhuLieu deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'LayMauPhuLieu not found' });
+    }
   } catch (error) {
-    res.status(500).json({ message: 'Error updating PhuLieu', error });
+    res.status(500).json({ message: 'Error deleting LayMauPhuLieu', error });
   }
 };
 
-const deletePhuLieu = async (req, res) => {
-  try {
-    const deletedPhuLieu = await phuLieuService.deletePhuLieu(req.params.id);
-    if (!deletedPhuLieu) return res.status(404).json({ message: 'PhuLieu not found' });
-    res.status(200).json({ message: 'PhuLieu deleted successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error deleting PhuLieu', error });
-  }
-};
-
-module.exports = {
-  createPhuLieu,
-  getAllPhuLieus,
-  getPhuLieuById,
-  getPhuLieuByKNumber, // Thêm hàm mới này
-  updatePhuLieu,
-  deletePhuLieu,
-};
+const getLayMauPhuLieuByKNumber = async (req, res) => {
+    try {
+      const layMauPhuLieu = await layMauPhuLieuService.getLayMauPhuLieuByKNumber(req.params.kNumber);
+      if (layMauPhuLieu) {
+        res.status(200).json(layMauPhuLieu);
+      } else {
+        res.status(404).json({ message: 'LayMauPhuLieu not found' });
+      }
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching LayMauPhuLieu by kNumber', error });
+    }
+  };
+  
+  module.exports = {
+    createLayMauPhuLieu,
+    getAllLayMauPhuLieu,
+    getLayMauPhuLieuById,
+    updateLayMauPhuLieu,
+    deleteLayMauPhuLieu,
+    getLayMauPhuLieuByKNumber,
+  };
+  

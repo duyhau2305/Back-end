@@ -47,11 +47,22 @@ const deleteUser = async (userId) => {
 const getUsers = async () => {
     return await User.find();
 };
-
+const getUserById = async (id) => {
+    try {
+        const user = await User.findById(id);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return user;
+    } catch (error) {
+        throw new Error('Error fetching user by ID: ' + error.message);
+    }
+};
 module.exports = {
     createUser,
     createAdminUser,
     updateUser,
     deleteUser,
-    getUsers
+    getUsers,
+    getUserById
 };

@@ -25,14 +25,6 @@ const getPhuLieuById = async (id) => {
   }
 };
 
-const getPhuLieuByKNumber = async (kNumber) => {
-  try {
-    return await PhuLieu.findOne({ kNumber: kNumber });
-  } catch (error) {
-    throw new Error('Error fetching PhuLieu by KNumber: ' + error.message);
-  }
-};
-
 const updatePhuLieu = async (id, data) => {
   try {
     return await PhuLieu.findByIdAndUpdate(id, data, { new: true });
@@ -53,7 +45,6 @@ module.exports = {
   createPhuLieu,
   getAllPhuLieus,
   getPhuLieuById,
-  getPhuLieuByKNumber, // Thêm hàm mới này
   updatePhuLieu,
   deletePhuLieu,
 };
