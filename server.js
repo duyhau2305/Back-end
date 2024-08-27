@@ -10,6 +10,8 @@ const inspectionSheetRoutes = require('./routes/inspectionSheetRoutes');
 const fileRoutes = require('./routes/fileRoutes');
 const phuLieuRoutes = require('./routes/phulieuRoutes');
 const layMauPhuLieuRoutes = require('./routes/layMauPhuLieuRoutes');
+const layMauNguyenLieuRoutes = require('./routes/layMauNguyenLieuRoutes');
+const newsRoutes = require('./routes/newsRoutes');
 
 const dotenv = require('dotenv');
 const cors = require('cors');
@@ -36,8 +38,10 @@ app.use('/api', userRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/inspection-sheets', inspectionSheetRoutes);
 app.use('/api/files', fileRoutes);
+app.use('/api', newsRoutes);
 app.use('/api/phulieu', phuLieuRoutes);
 app.use('/api/laymauphulieu', layMauPhuLieuRoutes);
+app.use('/api/laymauNguyenLieu', layMauNguyenLieuRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
