@@ -1,10 +1,12 @@
+// models/SupportRequest.js
 const mongoose = require('mongoose');
 
 const SupportRequestSchema = new mongoose.Schema({
   issue: { type: String, required: true },
-  priority: { type: String, required: true, enum: ['Bình Thường', 'Cao', 'Khẩn cấp'] },
+  priority: { type: String, required: true },
   description: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  status: { type: String, default: "Chưa hướng dẫn" },
+  emailContent: { type: String, default: "" },
 });
 
 module.exports = mongoose.model('SupportRequest', SupportRequestSchema);

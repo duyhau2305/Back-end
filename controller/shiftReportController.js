@@ -6,6 +6,7 @@ const getShiftReports = async (req, res) => {
         const reports = await shiftReportService.getAllShiftReports();
         res.status(200).json(reports);
     } catch (error) {
+        console.error('Lỗi khi lấy tất cả các báo cáo ca làm việc:', error);
         res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
     }
 };
@@ -16,6 +17,7 @@ const getShiftReport = async (req, res) => {
         const report = await shiftReportService.getShiftReportById(req.params.id);
         res.status(200).json(report);
     } catch (error) {
+        console.error(`Lỗi khi lấy báo cáo ca làm việc với ID ${req.params.id}:`, error);
         res.status(500).json({ error: 'Lỗi máy chủ nội bộ' });
     }
 };
@@ -26,6 +28,7 @@ const createShiftReport = async (req, res) => {
         const newReport = await shiftReportService.createShiftReport(req.body);
         res.status(201).json(newReport);
     } catch (error) {
+        console.error('Lỗi khi tạo báo cáo ca mới:', error);
         res.status(500).json({ error: 'Lỗi khi tạo báo cáo ca' });
     }
 };
@@ -36,6 +39,7 @@ const updateShiftReport = async (req, res) => {
         const updatedReport = await shiftReportService.updateShiftReport(req.params.id, req.body);
         res.status(200).json(updatedReport);
     } catch (error) {
+        console.error(`Lỗi khi cập nhật báo cáo ca với ID ${req.params.id}:`, error);
         res.status(500).json({ error: 'Lỗi khi cập nhật báo cáo ca' });
     }
 };
@@ -43,9 +47,10 @@ const updateShiftReport = async (req, res) => {
 // Xóa báo cáo ca làm việc
 const deleteShiftReport = async (req, res) => {
     try {
-        const deletedReport = await shiftReportService.deleteShiftReport(req.params.id);
+        await shiftReportService.deleteShiftReport(req.params.id);
         res.status(200).json({ message: 'Đã xóa báo cáo ca thành công' });
     } catch (error) {
+        console.error(`Lỗi khi xóa báo cáo ca với ID ${req.params.id}:`, error);
         res.status(500).json({ error: 'Lỗi khi xóa báo cáo ca' });
     }
 };

@@ -13,6 +13,10 @@ const layMauPhuLieuRoutes = require('./routes/layMauPhuLieuRoutes');
 const layMauNguyenLieuRoutes = require('./routes/layMauNguyenLieuRoutes');
 const newsRoutes = require('./routes/newsRoutes');
 const supportRequestRoutes = require('./routes/supportRequestRoutes');
+const resultNguyenLieuRoutes = require('./routes/resultNguyenLieuRoutes');
+const chemicalRoutes = require('./routes/chemicalRoutes');
+const chemicalEntryRoutes = require('./routes/chemicalEntryRoutes');
+
 
 
 const dotenv = require('dotenv');
@@ -45,6 +49,9 @@ app.use('/api/phulieu', phuLieuRoutes);
 app.use('/api/laymauphulieu', layMauPhuLieuRoutes);
 app.use('/api/laymauNguyenLieu', layMauNguyenLieuRoutes);
 app.use('/api/support-requests', supportRequestRoutes);
+app.use('/api/resultsNguyenlieu', resultNguyenLieuRoutes);
+app.use('/api/chemicals', chemicalRoutes);
+app.use('/api/chemical-entries', chemicalEntryRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

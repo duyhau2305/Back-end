@@ -6,6 +6,7 @@ const getProductionOrders = async (req, res) => {
   try {
     const orders = await productionOrderService.getAllProductionOrders();
     res.status(200).json(orders);
+    console.log("thông tin :  ",orders)
   } catch (error) {
     res.status(500).json({ message: 'Lỗi khi lấy đơn hàng sản xuất', error: error.message });
   }

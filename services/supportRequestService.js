@@ -1,3 +1,4 @@
+// services/supportRequestService.js
 const SupportRequest = require('../models/supportRequestModel');
 
 const getAllRequests = async () => {

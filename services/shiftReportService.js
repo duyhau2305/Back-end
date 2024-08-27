@@ -21,10 +21,13 @@ const getShiftReportById = async (id) => {
 
 // Tạo báo cáo ca mới
 const createShiftReport = async (data) => {
-    const { date, shift, shiftLeader, orderCode, actualQty } = data;
+    const { date, shift, shiftLeader, productionOrderId, actualQty } = data;
+     // In ra thông tin để kiểm tra
+     console.log('orderCode received:', orderCode);
 
-    // Tìm ProductionOrder dựa trên orderCode
-    const productionOrder = await ProductionOrder.findOne({ orderCode });
+    // Tìm ProductionOrder dựa trên ID
+    const productionOrder = await ProductionOrder.findById(productionOrderId);
+    console.log('Found productionOrder:', productionOrder);
     if (!productionOrder) {
         throw new Error('Không tìm thấy lệnh sản xuất với mã đơn hàng này');
     }
@@ -46,10 +49,10 @@ const createShiftReport = async (data) => {
 
 // Cập nhật báo cáo ca
 const updateShiftReport = async (id, data) => {
-    const { date, shift, shiftLeader, orderCode, actualQty } = data;
+    const { date, shift, shiftLeader, productionOrderId, actualQty } = data;
 
-    // Tìm ProductionOrder dựa trên orderCode
-    const productionOrder = await ProductionOrder.findOne({ orderCode });
+    // Tìm ProductionOrder dựa trên ID
+    const productionOrder = await ProductionOrder.findById(productionOrderId);
     if (!productionOrder) {
         throw new Error('Không tìm thấy lệnh sản xuất với mã đơn hàng này');
     }
