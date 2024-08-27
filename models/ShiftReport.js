@@ -6,7 +6,7 @@ const ShiftReportSchema = new mongoose.Schema({
   shift: { type: String, required: true }, // Ca làm việc (ví dụ: Sáng, Chiều)
   shiftLeader: { type: String, required: true }, // Trưởng ca
   productionOrder: { type: mongoose.Schema.Types.ObjectId, ref: 'ProductionOrder', required: true }, // Liên kết với ProductionOrder
-  plannedQty: { type: Number, required: true }, // Số lượng kế hoạch
+  plannedQty: { type: Number, required: true }, // Số lượng kế hoạch (sẽ lấy từ quantity của ProductionOrder)
   actualQty: { type: Number, required: true } // Số lượng thực tế
 });
 

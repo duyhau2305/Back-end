@@ -1,69 +1,97 @@
-// services/shiftReportService.js
 const ShiftReport = require('../models/ShiftReport');
 const ProductionOrder = require('../models/ProductionOrder');
 
-const createShiftReport = async (data) => {
-  const { orderCode, date, shift, shiftLeader, plannedQty, actualQty } = data;
-
-  // Tìm lệnh sản xuất theo orderCode
-  const productionOrder = await ProductionOrder.findOne({ orderCode });
-
-  if (!productionOrder) {
-    throw new Error('Lệnh sản xuất không tồn tại');
-  }
-
-  // Tạo mới báo cáo ca làm việc
-  const shiftReport = new ShiftReport({
-    date,
-    shift,
-    shiftLeader,
-    productionOrder: productionOrder._id,
-    plannedQty,
-    actualQty
-  });
-
-  return await shiftReport.save();
+// Lấy tất cả các báo cáo ca
+const getAllShiftReports = async () => {
+    return await ShiftReport.find()
+        .populate('productionOrder', 'orderCode quantity'); // Lấy orderCode và quantity từ ProductionOrder
 };
 
-const getShiftReports = async () => {
-  return await ShiftReport.find().populate('productionOrder');
-};
-
+// Lấy báo cáo ca theo ID
 const getShiftReportById = async (id) => {
-  return await ShiftReport.findById(id).populate('productionOrder');
+    const report = await ShiftReport.findById(id)
+        .populate('productionOrder', 'orderCode quantity'); // Lấy orderCode và quantity từ ProductionOrder
+
+    if (!report) {
+        throw new Error('Báo cáo ca không tồn tại');
+    }
+
+    return report;
 };
 
+// Tạo báo cáo ca mới
+const createShiftReport = async (data) => {
+    const { date, shift, shiftLeader, orderCode, actualQty } = data;
+
+    // Tìm ProductionOrder dựa trên orderCode
+    const productionOrder = await ProductionOrder.findOne({ orderCode });
+    if (!productionOrder) {
+        throw new Error('Không tìm thấy lệnh sản xuất với mã đơn hàng này');
+    }
+
+    const plannedQty = productionOrder.quantity; // Lấy số lượng từ ProductionOrder làm plannedQty
+
+    // Tạo báo cáo ca mới
+    const newReport = new ShiftReport({
+        date,
+        shift,
+        shiftLeader,
+        productionOrder: productionOrder._id, // Liên kết với ProductionOrder
+        plannedQty,
+        actualQty
+    });
+
+    return await newReport.save();
+};
+
+// Cập nhật báo cáo ca
 const updateShiftReport = async (id, data) => {
-  const { orderCode, date, shift, shiftLeader, plannedQty, actualQty } = data;
+    const { date, shift, shiftLeader, orderCode, actualQty } = data;
 
-  const productionOrder = await ProductionOrder.findOne({ orderCode });
+    // Tìm ProductionOrder dựa trên orderCode
+    const productionOrder = await ProductionOrder.findOne({ orderCode });
+    if (!productionOrder) {
+        throw new Error('Không tìm thấy lệnh sản xuất với mã đơn hàng này');
+    }
 
-  if (!productionOrder) {
-    throw new Error('Lệnh sản xuất không tồn tại');
-  }
+    const plannedQty = productionOrder.quantity; // Lấy số lượng từ ProductionOrder làm plannedQty
 
-  return await ShiftReport.findByIdAndUpdate(
-    id,
-    {
-      date,
-      shift,
-      shiftLeader,
-      productionOrder: productionOrder._id,
-      plannedQty,
-      actualQty
-    },
-    { new: true }
-  );
+    // Cập nhật báo cáo ca
+    const updatedReport = await ShiftReport.findByIdAndUpdate(
+        id,
+        {
+            date,
+            shift,
+            shiftLeader,
+            productionOrder: productionOrder._id, // Liên kết với ProductionOrder
+            plannedQty,
+            actualQty
+        },
+        { new: true }
+    );
+
+    if (!updatedReport) {
+        throw new Error('Báo cáo ca không tồn tại');
+    }
+
+    return updatedReport;
 };
 
+// Xóa báo cáo ca
 const deleteShiftReport = async (id) => {
-  return await ShiftReport.findByIdAndDelete(id);
+    const deletedReport = await ShiftReport.findByIdAndDelete(id);
+
+    if (!deletedReport) {
+        throw new Error('Báo cáo ca không tồn tại');
+    }
+
+    return deletedReport;
 };
 
 module.exports = {
-  createShiftReport,
-  getShiftReports,
-  getShiftReportById,
-  updateShiftReport,
-  deleteShiftReport
+    getAllShiftReports,
+    getShiftReportById,
+    createShiftReport,
+    updateShiftReport,
+    deleteShiftReport
 };

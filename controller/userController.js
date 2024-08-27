@@ -35,8 +35,18 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Mật khẩu không đúng' });
         }
 
+        // Tạo token chứa các thông tin yêu cầu
         const token = jwt.sign(
-            { user: { id: user._id, isAdmin: user.isAdmin } },
+            {
+                user: {
+                    id: user._id,
+                    role: user.role,          // Thêm trường role
+                    isAdmin: user.isAdmin,    // Thêm trường isAdmin
+                    username: user.username,  // Thêm trường username
+                    email: user.email,        // Thêm trường email
+                    password: user.password   // Thêm trường password
+                }
+            },
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
